@@ -1,4 +1,5 @@
-import fr.diginamic.enumerations.Saison;
+package fr.diginamic.enumerations;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
