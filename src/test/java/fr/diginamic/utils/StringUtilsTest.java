@@ -1,9 +1,8 @@
 package fr.diginamic.utils;
 
 import fr.diginamic.exceptions.LevenshteinUnproperArgument;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StringUtilsTest {
 
@@ -21,11 +20,11 @@ public class StringUtilsTest {
 
     }
 
-    @Test(expected = LevenshteinUnproperArgument.class)
-    public void testLevenshteinDistanceError() throws LevenshteinUnproperArgument {
+    @Test
+    public void testLevenshteinDistanceError() {
 
-        assertEquals(1, StringUtils.levenshteinDistance(null, "£dezvfdvdd"));
-        assertEquals(1, StringUtils.levenshteinDistance(null, null));
+        assertThrows(LevenshteinUnproperArgument.class, () -> StringUtils.levenshteinDistance(null, "£dezvfdvdd"));
+        assertThrows(LevenshteinUnproperArgument.class, () -> StringUtils.levenshteinDistance(null, null));
 
     }
 

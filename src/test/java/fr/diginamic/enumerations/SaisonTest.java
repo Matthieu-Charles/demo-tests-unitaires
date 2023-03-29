@@ -1,8 +1,8 @@
 package fr.diginamic.enumerations;
 
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**Classe de test de l'énumération Saison
  * @author Matthieu CHARLES
