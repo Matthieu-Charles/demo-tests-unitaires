@@ -1,4 +1,7 @@
 package fr.diginamic.immobilier.entites;
+
+import java.text.Collator;
+
 /** Représente une maison avec toutes ses pièces
  * @author DIGINAMIC
  *
@@ -20,6 +23,10 @@ public class Maison {
 	 * @param nvPiece nouvelle pièce à ajouter
 	 */
 	public void ajouterPiece(Piece nvPiece) {
+
+		if (nvPiece == null) {
+			throw new NullPointerException("La pièce n'est pas initialisée (=null)");
+		}
 		
 		// On est obligé d'agrandir le tableau initial de 1 à chaque ajout
 		// d'une nouvelle pièce
@@ -29,9 +36,7 @@ public class Maison {
 		Piece[] newTab = new Piece[pieces.length+1];
 		
 		// On déverse toutes les pièces du tableau pieces dans newTab
-		for (int i=0; i<pieces.length; i++){
-			newTab[i]=pieces[i];
-		}
+		System.arraycopy(pieces, 0, newTab, 0, pieces.length);
 		
 		// On place en dernière position dans le nouveau tableau la nouvelle
 		// pièce
@@ -50,28 +55,46 @@ public class Maison {
 	 * @return double
 	 */
 	public double superficieEtage(int choixEtage) {
-		double superficieEtage = 0;
 
-		for (int i = 0; i < pieces.length; i++) {
-			if (choixEtage == this.pieces[i].getNumEtage()) {
-				superficieEtage = this.pieces[i].getSuperficie();
+		double superficieEtage = 0;
+		boolean etageExiste = false;
+
+		for (Piece piece : pieces) {
+			if (choixEtage == piece.getNumEtage()) {
+				superficieEtage = piece.getSuperficie();
+				etageExiste = true;
 			}
 		}
 
+		if(!etageExiste) {
+			throw new RuntimeException("Il n'existe pas d'étage : " + choixEtage);
+		}
 		return superficieEtage;
 	}
 	
-	/** Retourne la superficie total pour un type de pièce donné
+	/** Retourne la superficie totale pour un type de pièce donné
 	 * @param typePiece type de pièce
 	 * @return double
 	 */
 	public double superficieTypePiece(String typePiece) {
 		double superficie = 0;
+		boolean typePieceExists = false;
 
-		for (int i = 1; i < pieces.length; i++) {
-			if (typePiece!=null && typePiece.equals(this.pieces[i].getType())) {
-				superficie = superficie + this.pieces[i].getSuperficie();
+		if(typePiece == null || typePiece.isEmpty()){
+			throw new RuntimeException("Le type demandé est une chaîne vide ou bien de valeur null");
+		}
+
+		final Collator instance = Collator.getInstance();
+		instance.setStrength(Collator.PRIMARY);
+		for (Piece piece : this.pieces) {
+			if (instance.compare(typePiece, piece.getType())== 0) {
+				superficie = superficie + piece.getSuperficie();
+				typePieceExists = true;
 			}
+		}
+
+		if(!typePieceExists) {
+			throw new RuntimeException("Il n'y a aucune correspondance pour le type de pièce demandé : " + typePiece);
 		}
 
 		return superficie;
@@ -83,8 +106,8 @@ public class Maison {
 	public double calculerSurface() {
 		double superficieTot = 0;
 
-		for (int i = 0; i < pieces.length; i++) {
-			superficieTot = superficieTot + this.pieces[i].getSuperficie();
+		for (Piece piece : pieces) {
+			superficieTot = superficieTot + piece.getSuperficie();
 		}
 
 		return superficieTot;

@@ -10,7 +10,6 @@ public abstract class Piece {
 	
 	/** numEtage : étage où se situe la pièce*/
 	private int numEtage;
-	
 
 	/** TYPE_CHAMBRE : String*/
 	public static final String TYPE_CHAMBRE = "Chambre";
